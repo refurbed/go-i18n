@@ -11,10 +11,11 @@ import (
 	"sync"
 	"unicode"
 
+	"github.com/pelletier/go-toml"
+	"gopkg.in/yaml.v2"
+
 	"github.com/nicksnyder/go-i18n/i18n/language"
 	"github.com/nicksnyder/go-i18n/i18n/translation"
-	toml "github.com/pelletier/go-toml"
-	"gopkg.in/yaml.v2"
 )
 
 // TranslateFunc is a copy of i18n.TranslateFunc to avoid a circular dependency.
@@ -95,7 +96,7 @@ func parseTranslations(filename string, buf []byte) ([]translation.Translation, 
 			return nil, err
 		}
 
-		m := make(map[string]map[string]interface{})
+		m := make(map[string]interface{})
 		for k, v := range tree.ToMap() {
 			m[k] = v.(map[string]interface{})
 		}
@@ -111,11 +112,13 @@ func parseTranslations(filename string, buf []byte) ([]translation.Translation, 
 		}
 		return parseStandardFormat(standardFormat)
 	}
-	var flatFormat map[string]map[string]interface{}
+
+	var flatFormat map[string]interface{}
 	if err := unmarshal(ext, buf, &flatFormat); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal %v: %v", filename, err)
 	}
 	return parseFlatFormat(flatFormat)
+
 }
 
 func isStandardFormat(ext string, buf []byte) bool {
@@ -183,23 +186,46 @@ func parseStandardFormat(data []map[string]interface{}) ([]translation.Translati
 // and passes it to parseStandardFormat.
 //
 // Flat format logic:
-// key of data must be a string and data[key] must be always map[string]interface{},
-// but if there is only "other" key in it then it is non-plural, else plural.
-func parseFlatFormat(data map[string]map[string]interface{}) ([]translation.Translation, error) {
+// key of data must be a string and data[key] must be either string (if not plural) or map[string]interface{} if plural,
+// as a fallback, if there is only "other" key in it then it is considered non-plural, else plural.
+func parseFlatFormat(data map[string]interface{}) ([]translation.Translation, error) {
 	var standardFormatData []map[string]interface{}
 	for id, translationData := range data {
-		dataObject := make(map[string]interface{})
-		dataObject["id"] = id
-		if len(translationData) == 1 { // non-plural form
-			_, otherExists := translationData["other"]
-			if otherExists {
-				dataObject["translation"] = translationData["other"]
+		switch td := translationData.(type) {
+		case map[interface{}]interface{}:
+			dataObject := make(map[string]interface{})
+			dataObject["id"] = id
+			if len(td) == 1 { // non-plural form
+				_, otherExists := td["other"]
+				if otherExists {
+					dataObject["translation"] = td["other"]
+				}
+			} else { // plural form
+				dataObject["translation"] = translationData
 			}
-		} else { // plural form
-			dataObject["translation"] = translationData
-		}
 
-		standardFormatData = append(standardFormatData, dataObject)
+			standardFormatData = append(standardFormatData, dataObject)
+		case map[string]interface{}:
+			dataObject := make(map[string]interface{})
+			dataObject["id"] = id
+			if len(td) == 1 { // non-plural form
+				_, otherExists := td["other"]
+				if otherExists {
+					dataObject["translation"] = td["other"]
+				}
+			} else { // plural form
+				dataObject["translation"] = translationData
+			}
+
+			standardFormatData = append(standardFormatData, dataObject)
+		case string:
+			standardFormatData = append(standardFormatData, map[string]interface{}{
+				"id":          id,
+				"translation": td,
+			})
+		default:
+			panic("unknown translation type: " + reflect.TypeOf(translationData).String())
+		}
 	}
 
 	return parseStandardFormat(standardFormatData)

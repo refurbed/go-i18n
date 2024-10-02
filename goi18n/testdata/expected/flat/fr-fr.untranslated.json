@@ -20,6 +20,9 @@
   "program_greeting": {
     "other": "Hello world"
   },
+  "qwe": {
+    "other": "asd"
+  },
   "your_unread_email_count": {
     "one": "You have {{.Count}} unread emails.",
     "other": "You have {{.Count}} unread emails."
