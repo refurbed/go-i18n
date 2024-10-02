@@ -14,8 +14,8 @@ import (
 	"github.com/pelletier/go-toml"
 	"gopkg.in/yaml.v2"
 
-	"github.com/nicksnyder/go-i18n/i18n/language"
-	"github.com/nicksnyder/go-i18n/i18n/translation"
+	"github.com/refurbed/go-i18n/i18n/language"
+	"github.com/refurbed/go-i18n/i18n/translation"
 )
 
 // TranslateFunc is a copy of i18n.TranslateFunc to avoid a circular dependency.

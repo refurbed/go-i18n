@@ -1,23 +1,23 @@
-> [!CAUTION]
+> [!Notice]
 >
-> v1 of go-i18n is deprecated and no longer maintained. Please switch to [v2](https://pkg.go.dev/github.com/nicksnyder/go-i18n/v2).
+> This is a fork of a deprecated version (v1) of a library originally found on [github.com/nicksnyder/go-i18n](github.com/nicksnyder/go-i18n). To work with Go's toolchain we had to change the module name.
 
-go-i18n [![Build Status](https://travis-ci.org/nicksnyder/go-i18n.svg?branch=master)](http://travis-ci.org/nicksnyder/go-i18n) [![Sourcegraph](https://sourcegraph.com/github.com/nicksnyder/go-i18n/-/badge.svg)](https://sourcegraph.com/github.com/nicksnyder/go-i18n?badge)
+go-i18n [![Build Status](https://travis-ci.org/nicksnyder/go-i18n.svg?branch=master)](http://travis-ci.org/nicksnyder/go-i18n) [![Sourcegraph](https://sourcegraph.com/github.com/refurbed/go-i18n/-/badge.svg)](https://sourcegraph.com/github.com/refurbed/go-i18n?badge)
 =======
 
 go-i18n is a Go [package](#i18n-package) and a [command](#goi18n-command) that helps you translate Go programs into multiple languages.
 * Supports [pluralized strings](http://cldr.unicode.org/index/cldr-spec/plural-rules) for all 200+ languages in the [Unicode Common Locale Data Repository (CLDR)](http://www.unicode.org/cldr/charts/28/supplemental/language_plural_rules.html).
-  *  Code and tests are [automatically generated](https://github.com/nicksnyder/go-i18n/tree/master/i18n/language/codegen) from [CLDR data](http://cldr.unicode.org/index/downloads)
+  *  Code and tests are [automatically generated](https://github.com/refurbed/go-i18n/tree/master/i18n/language/codegen) from [CLDR data](http://cldr.unicode.org/index/downloads)
 * Supports strings with named variables using [text/template](http://golang.org/pkg/text/template/) syntax.
 * Translation files are simple JSON, TOML or YAML.
-* [Documented](http://godoc.org/github.com/nicksnyder/go-i18n) and [tested](https://travis-ci.org/nicksnyder/go-i18n)!
+* [Documented](http://godoc.org/github.com/refurbed/go-i18n) and [tested](https://travis-ci.org/nicksnyder/go-i18n)!
 
-Package i18n [![GoDoc](http://godoc.org/github.com/nicksnyder/go-i18n?status.svg)](http://godoc.org/github.com/nicksnyder/go-i18n/i18n)
+Package i18n [![GoDoc](http://godoc.org/github.com/refurbed/go-i18n?status.svg)](http://godoc.org/github.com/refurbed/go-i18n/i18n)
 ------------
 
 The i18n package provides runtime APIs for fetching translated strings.
 
-Command goi18n [![GoDoc](http://godoc.org/github.com/nicksnyder/go-i18n?status.svg)](http://godoc.org/github.com/nicksnyder/go-i18n/goi18n)
+Command goi18n [![GoDoc](http://godoc.org/github.com/refurbed/go-i18n?status.svg)](http://godoc.org/github.com/refurbed/go-i18n/goi18n)
 --------------
 
 The goi18n command provides functionality for managing the translation process.
@@ -27,7 +27,7 @@ Installation
 
 Make sure you have [setup GOPATH](http://golang.org/doc/code.html#GOPATH).
 
-    go get -u github.com/nicksnyder/go-i18n/goi18n
+    go get -u github.com/refurbed/go-i18n/goi18n
     goi18n -help
 
 Workflow
@@ -120,11 +120,11 @@ Here is an example of the default file format that go-i18n supports:
 ]
 ```
 
-To use a different file format, write a parser for the format and add the parsed translations using [AddTranslation](https://godoc.org/github.com/nicksnyder/go-i18n/i18n#AddTranslation).
+To use a different file format, write a parser for the format and add the parsed translations using [AddTranslation](https://godoc.org/github.com/refurbed/go-i18n/i18n#AddTranslation).
 
 Note that TOML only supports the flat format, which is described below.
 
-More examples of translation files: [JSON](https://github.com/nicksnyder/go-i18n/tree/master/goi18n/testdata/input), [TOML](https://github.com/nicksnyder/go-i18n/blob/master/goi18n/testdata/input/flat/ar-ar.one.toml), [YAML](https://github.com/nicksnyder/go-i18n/blob/master/goi18n/testdata/input/yaml/en-us.one.yaml).
+More examples of translation files: [JSON](https://github.com/refurbed/go-i18n/tree/master/goi18n/testdata/input), [TOML](https://github.com/refurbed/go-i18n/blob/master/goi18n/testdata/input/flat/ar-ar.one.toml), [YAML](https://github.com/refurbed/go-i18n/blob/master/goi18n/testdata/input/yaml/en-us.one.yaml).
 
 Flat Format
 -------------
@@ -174,7 +174,7 @@ and name of substructures (ids) should be always a string.
 If there is only one key in substructure and it is "other", then it's non-plural
 translation, else plural.
 
-More examples of flat format translation files can be found in [goi18n/testdata/input/flat](https://github.com/nicksnyder/go-i18n/tree/master/goi18n/testdata/input/flat).
+More examples of flat format translation files can be found in [goi18n/testdata/input/flat](https://github.com/refurbed/go-i18n/tree/master/goi18n/testdata/input/flat).
 
 Contributions
 -------------

@@ -11,10 +11,10 @@ import (
 
 	"gopkg.in/yaml.v2"
 
-	"github.com/nicksnyder/go-i18n/i18n/bundle"
-	"github.com/nicksnyder/go-i18n/i18n/language"
-	"github.com/nicksnyder/go-i18n/i18n/translation"
 	toml "github.com/pelletier/go-toml"
+	"github.com/refurbed/go-i18n/i18n/bundle"
+	"github.com/refurbed/go-i18n/i18n/language"
+	"github.com/refurbed/go-i18n/i18n/translation"
 )
 
 type mergeCommand struct {
